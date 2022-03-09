@@ -51,6 +51,22 @@ app.get('/fruits/seed', (req, res) => {
         })
 })
 
+// INDEX route
+app.get('/fruits', (req, res) => {
+    // Find all the fruits
+    Fruit.find({})
+        // Then render a template AFTER they're found
+        .then( fruits => {
+            console.log(fruits)
+            res.render('fruits/index.liquid', {fruits})
+        })
+        .catch( error => {
+            console.log(error)
+            res.json({error})
+        })
+    // Show an error if there is one
+})
+
 /***************** Server Listener ******************/
 const PORT = process.env.PORT
 app.listen(PORT, () => {
