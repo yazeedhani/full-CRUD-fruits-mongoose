@@ -5,6 +5,7 @@ const express = require('express')
 const morgan = require('morgan')
 const methodOverride = require('method-override')
 // we'll also import our fruit model when we have it
+const Fruit = require('./models/fruit.js')
 
 /***************** Create our Express Application Object ******************/
 const app = require('liquid-express-views')(express())
@@ -22,6 +23,7 @@ app.use(express.static('public'))
 
 /***************** Routes ******************/
 app.get('/', (req, res) => {
+    console.log(Fruit)
     res.send('Your server is running, better go catch it.')
 })
 
