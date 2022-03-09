@@ -53,18 +53,46 @@ app.get('/fruits/seed', (req, res) => {
 
 // INDEX route
 app.get('/fruits', (req, res) => {
-    // Find all the fruits
+    // Find all the fruits in the DB by querying it
     Fruit.find({})
         // Then render a template AFTER they're found
+        // fruits is what is returned if the promise is resolved/fulfilled
         .then( fruits => {
             console.log(fruits)
-            res.render('fruits/index.liquid', {fruits})
+            res.render('fruits/index.liquid', {fruits: fruits})
         })
+        // Show an error if there is one
         .catch( error => {
             console.log(error)
             res.json({error})
         })
-    // Show an error if there is one
+})
+
+/************** New and Create routes *****************/
+// NEW route --> GET route that renders our page with the form
+app.get('/fruits/new',(req, res) => {
+    res.render('fruits/new')
+})
+
+// CREATE route --> POST route that actually calls the DB and makes a new document
+
+/******************************************************/
+
+// SHOW route
+app.get('/fruits/:id', (req, res) => {
+    // First, we need to get the id
+    const fruitId = req.params.id
+    // Then, we can find a fruit by its id
+    Fruit.findById(fruitId)
+        // Once found, then we can render a view with the data
+        .then( fruit => {
+            res.render('fruits/show', {fruit})
+        })
+        // If there is an error, show that instead
+        .catch( error => {
+            console.log(error)
+            res.json({error})
+        })
 })
 
 /***************** Server Listener ******************/
