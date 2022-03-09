@@ -16,7 +16,7 @@ mongoose.connect(DATABASE_URL, CONFIG)
 // Events for when our connection opens/closes for errors
 mongoose.connection
     .on("error", (err) => console.log(err.message + " is mongod not running?"))
-    .on("open", () => console.log("mongo connected: ", mongoURI))
+    .on("open", () => console.log("mongo connected: ", DATABASE_URL))
     .on("close", () => console.log("mongo disconnected"))
 
 /***************** Export our Connection ******************/
