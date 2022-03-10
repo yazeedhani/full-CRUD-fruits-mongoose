@@ -1,12 +1,33 @@
 /***************** DEPENDENCIES ******************/
 const express = require('express')
+const req = require('express/lib/request')
 const Fruit = require('../models/fruit.js')
 
 /***************** Create Router ******************/
 const router = express.Router()
 
+/***************** Router Authorization Middleware ******************/
+// Before any routes hit, this middleware will check to see if the user is logged in first, then it will hit the routes if logged in
+// req.session will be created by the time we get to these routes
+// Now that we have user specific fruits, we'll add the username to the fruit created
+
+router.use((req, res, next) => {
+    // checking the loggedin boolean of our session
+    if(req.session.loggedIn)
+    {
+        // if they're logged in, go to the next thing(thats the controller)
+        next()
+    }
+
+    else
+    {
+        // if they're not logged in, then send them to the login page
+        res.redirect('/user/login')
+    }
+})
+
 /***************** Routes ******************/
-// INDEX route
+// INDEX route -> show all the fruits
 router.get('/', (req, res) => {
     // Find all the fruits in the DB by querying it
     Fruit.find({})
@@ -23,6 +44,22 @@ router.get('/', (req, res) => {
         })
 })
 
+// INDEX route -> show only the loggedIn user's fruits
+router.get('/mine', (req, res) => {
+    // Find all the fruits in the DB by querying it
+    Fruit.find({username: req.session.username})
+        // Then render a template AFTER they're found
+        // fruits is what is returned if the promise is resolved/fulfilled
+        .then( fruits => {
+            console.log(fruits)
+            res.render('fruits/index', {fruits: fruits})
+        })
+        // Show an error if there is one
+        .catch( error => {
+            console.log(error)
+            res.json({error})
+        })
+})
 /************** New and Create routes (Create new fruit) *****************/
 // NEW route --> GET route that renders our page with the form
 router.get('/new',(req, res) => {
@@ -37,6 +74,7 @@ router.post('/', (req, res) => {
     req.body.readyToEat = req.body.readyToEat === 'on' ? true : false
     console.log('this is the fruit to create ', req.body)
     // Now we're ready for mongoose to do it's thing
+    req.body.username = req.session.username // req.session stores the username when loggedin/ session is created
     Fruit.create(req.body)
         .then( fruit => {
             console.log('this was returned from create: ', fruit)

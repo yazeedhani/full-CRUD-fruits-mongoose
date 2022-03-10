@@ -46,7 +46,7 @@ app.use('/fruits', FruitRouter)
 app.use('/user', UserRouter)
 
 app.get('/', (req, res) => {
-    console.log(Fruit)
+    // console.log(Fruit)
     res.send('Your server is running, better go catch it.')
 })
 

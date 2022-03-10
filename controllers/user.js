@@ -40,7 +40,7 @@ router.post('/signup', async (req, res) => {
 router.get('/login', (req, res) => {
     res.render('users/login')
 })
-// POST to sens the login info(and create a session)
+// POST to send the login info(and create a session)
 router.post('/login', async (req, res) => {
     // res.send('login -> post')
     // get the data from the request body
@@ -58,7 +58,7 @@ router.post('/login', async (req, res) => {
                 if(result)
                 {
                     // then we'll need to use the session object
-                    // store some properties in the session
+                    // store some properties in the session object
                     req.session.username = username
                     req.session.loggedIn = true
                     // redirect to /fruits if login is successful
@@ -84,6 +84,13 @@ router.post('/login', async (req, res) => {
 })
 
 // Signout route  --> to destroy the session
+router.get('/logout', (req, res) => {
+    // Destroy the session and redirect to the main page
+    req.session.destroy( err => {
+        console.log(err)
+        res.redirect('/user/login')
+    })
+})
 
 /***************** Export Router ******************/
 module.exports = router
