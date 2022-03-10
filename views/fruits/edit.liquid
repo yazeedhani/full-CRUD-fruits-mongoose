@@ -1,24 +1,21 @@
 {% layout 'layout.liquid' %}
 {% block content %}
-    <div>
+    <div class="container-sm">
         <form action="/fruits/{{ fruit.id }}?_method=PUT" method="POST">
             <fieldset>
                 <legend>Edit Fruit</legend>
-                <label>
-                    Name: <input type="text" name="name" value={{fruit.name}}>
-                </label>
-                <label>
-                    Color: <input type="text" name="color" value={{fruit.color}}>
-                </label>
-                <label>
-                    Ready To Eat: <input type="checkbox" name="readyToEat"
-                        {% if fruit.readyToEat %}
-                            checked
-                        {% endif %}
-                    >
-                </label>
+                <label class="form-label">Name: </label>
+                <input type="text" name="name" value={{fruit.name}} class="form-control">
+                <label class="form-label">Color: </label>
+                <input type="text" name="color" value={{fruit.color}} class="form-control">
+                <label class="form-label">Ready To Eat: </label>
+                <input type="checkbox" class="form-check-input" name="readyToEat"
+                    {% if fruit.readyToEat %}
+                        checked
+                    {% endif %}
+                > 
             </fieldset>
-            <input type="submit" value="Edit {{fruit.name}}">
+            <input type="submit" value="Edit {{fruit.name}}" class="btn btn-success">
         </form>
     </div>
 {% endblock %}
