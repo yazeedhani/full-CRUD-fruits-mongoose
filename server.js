@@ -10,6 +10,7 @@ const methodOverride = require('method-override')
 // Now that we're using controllers as they should be used,
 // We need to acquire our routers
 const FruitRouter = require('./controllers/fruit.js')
+const UserRouter = require('./controllers/user.js')
 
 /***************** Create our Express Application Object ******************/
 const app = require('liquid-express-views')(express())
@@ -30,6 +31,7 @@ app.use(express.static('public'))
 // Any routes that begin with /fruits, send them to the FruitRouter
 // Will prepend /fruits to all the routes in our fruits controller file
 app.use('/fruits', FruitRouter)
+app.use('/user', UserRouter)
 
 app.get('/', (req, res) => {
     console.log(Fruit)
