@@ -6,30 +6,6 @@ const Fruit = require('../models/fruit.js')
 const router = express.Router()
 
 /***************** Routes ******************/
-router.get('/seed', (req, res) => {
-    //array of starter fruits
-    const startFruits = [
-        { name: "Orange", color: "orange", readyToEat: false },
-        { name: "Grape", color: "purple", readyToEat: false },
-        { name: "Banana", color: "orange", readyToEat: false },
-        { name: "Strawberry", color: "red", readyToEat: false },
-        { name: "Coconut", color: "brown", readyToEat: false },
-      ]
-      // when we seed data, there are a few steps invlolved
-      // delete all the data that already exists (will only happen if data exists)
-      Fruit.remove({})
-        .then( data => {
-            console.log('this is what remove returns', data)
-            // then we can create with our seed data
-            Fruit.create(startFruits)
-                .then( data => {
-                    console.log('this is what create returns', data)
-                    // then we can send if we want to see that data
-                    res.send(data)
-                })
-        })
-})
-
 // INDEX route
 router.get('/', (req, res) => {
     // Find all the fruits in the DB by querying it
