@@ -20,6 +20,7 @@ const userSchema = new Schema({
 })
 
 // Make a user model
+// Mongo will automatically create a collection named 'users'
 const User = model('User', userSchema)
 
 /***************** Export our User Model ******************/
