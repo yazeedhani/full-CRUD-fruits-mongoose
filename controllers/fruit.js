@@ -1,6 +1,5 @@
 /***************** DEPENDENCIES ******************/
 const express = require('express')
-const req = require('express/lib/request')
 const Fruit = require('../models/fruit.js')
 
 /***************** Create Router ******************/
@@ -10,7 +9,6 @@ const router = express.Router()
 // Before any routes hit, this middleware will check to see if the user is logged in first, then it will hit the routes if logged in
 // req.session will be created by the time we get to these routes
 // Now that we have user specific fruits, we'll add the username to the fruit created
-
 router.use((req, res, next) => {
     // checking the loggedin boolean of our session
     if(req.session.loggedIn)
@@ -35,7 +33,11 @@ router.get('/', (req, res) => {
         // fruits is what is returned if the promise is resolved/fulfilled
         .then( fruits => {
             console.log(fruits)
-            res.render('fruits/index.liquid', {fruits: fruits})
+            // This is so we can display the currently logged in user's username
+            // THhis must be done to every route that renders a view
+            const username = req.session.username
+			const loggedIn = req.session.loggedIn
+            res.render('fruits/index.liquid', {fruits: fruits, username, loggedIn})
         })
         // Show an error if there is one
         .catch( error => {
@@ -52,7 +54,9 @@ router.get('/mine', (req, res) => {
         // fruits is what is returned if the promise is resolved/fulfilled
         .then( fruits => {
             console.log(fruits)
-            res.render('fruits/index', {fruits: fruits})
+            const username = req.session.username
+			const loggedIn = req.session.loggedIn
+            res.render('fruits/index', {fruits: fruits, username, loggedIn})
         })
         // Show an error if there is one
         .catch( error => {
@@ -60,10 +64,13 @@ router.get('/mine', (req, res) => {
             res.json({error})
         })
 })
+
 /************** New and Create routes (Create new fruit) *****************/
 // NEW route --> GET route that renders our page with the form
 router.get('/new',(req, res) => {
-    res.render('fruits/new')
+    const username = req.session.username
+	const loggedIn = req.session.loggedIn
+    res.render('fruits/new', {username, loggedIn})
 })
 // CREATE route --> POST route that actually calls the DB and makes a new document
 router.post('/', (req, res) => {
@@ -96,7 +103,9 @@ router.get('/:id/edit', (req, res) => {
     Fruit.findById(fruitId)
     // Render if there is a fruit
         .then( fruit => {
-            res.render('fruits/edit', {fruit: fruit})
+            const username = req.session.username
+			const loggedIn = req.session.loggedIn
+            res.render('fruits/edit', {fruit: fruit, username, loggedIn})
         })
     // Error if no fruit
         .catch( error => {
@@ -133,7 +142,9 @@ router.get('/:id', (req, res) => {
     Fruit.findById(fruitId)
         // Once found, then we can render a view with the data
         .then( fruit => {
-            res.render('fruits/show', {fruit})
+            const username = req.session.username
+			const loggedIn = req.session.loggedIn
+            res.render('fruits/show', {fruit, username, loggedIn})
         })
         // If there is an error, show that instead
         .catch( error => {
