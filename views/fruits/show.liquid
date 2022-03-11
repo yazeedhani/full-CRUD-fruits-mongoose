@@ -21,5 +21,15 @@
                 </div>
             {% endif %}
         </article>
+        <div class="col-md-6">
+            <form action="/comments/{{fruit.id}}" method="POST">
+                <fieldset>
+                    <legend>Add Comment</legend>
+                    <label class="form-label">Comment: </label>
+                    <input type="text" class="form-control" name="note" placeholder="enter comment here...">
+                </fieldset>
+                <input type="submit" class="btn btn-success" value="Add Comment">
+            </form>
+        </div>
     </div>
 {% endblock %}

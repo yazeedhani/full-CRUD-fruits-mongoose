@@ -1,6 +1,12 @@
 /***************** DEPENDENCIES ******************/
 const mongoose = require('./connection.js')
 
+// we also need to import our commentSchema
+const commentSchema = require('./comment.js')
+
+// We'll import our user model so we can populate the info
+const User = require('./user.js')
+
 /***************** Define our Fruits Model ******************/
 // Pull the Schema and Model constructors from mongoose
 // We're going to use something called destructuring to accomplish this
@@ -21,7 +27,8 @@ const fruitSchema = new Schema(
             ref: 'User'
             // Now that we have an owner field, let's look and
             // replace references to the username in our fruit controllers
-        }
+        },
+        comments: [commentSchema]
     }, {timestamps: true}
 )
 

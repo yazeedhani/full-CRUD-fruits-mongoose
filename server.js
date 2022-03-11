@@ -10,18 +10,21 @@ const express = require('express')
 const FruitRouter = require('./controllers/fruit.js')
 const UserRouter = require('./controllers/user.js')
 const HomeRouter = require('./controllers/home.js')
+const CommentRouter = require('./controllers/comment.js')
 /***************** Create our Express Application Object ******************/
 const app = require('liquid-express-views')(express())
 
+/***************** Middleware ******************/
 const middleware = require('./utils/middleware.js')
 middleware(app)
 
 
 /***************** Routes ******************/
-
+// Register our routes here
 // Any routes that begin with /fruits, send them to the FruitRouter
 // Will prepend /fruits to all the routes in our fruits controller file
 app.use('/fruits', FruitRouter)
+app.use('/comments', CommentRouter)
 app.use('/user', UserRouter)
 app.use('/', HomeRouter)
 

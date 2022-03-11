@@ -145,6 +145,7 @@ router.get('/:id', (req, res) => {
     Fruit.findById(fruitId)
         // Once found, then we can render a view with the data
         .then( fruit => {
+            console.log('The fruit we got\n', fruit)
             const username = req.session.username
 			const loggedIn = req.session.loggedIn
             const userId = req.session.userId
