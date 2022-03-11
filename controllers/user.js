@@ -3,6 +3,9 @@ const express = require('express')
 const User = require('../models/user.js')
 const bcrypt = require('bcryptjs')
 
+/** A router links these routes to server.js so the routes can be used when called upon */
+/** Route Endpoint = verb.('/route') - ex. get.(/user) */
+
 /***************** Create Router ******************/
 const router = express.Router()
 
@@ -61,6 +64,9 @@ router.post('/login', async (req, res) => {
                     // store some properties in the session object
                     req.session.username = username
                     req.session.loggedIn = true
+                    req.session.userId = user.id
+
+                    console.log('session user id', req.session.userId)
                     // redirect to /fruits if login is successful
                     res.redirect('/fruits')
                 }

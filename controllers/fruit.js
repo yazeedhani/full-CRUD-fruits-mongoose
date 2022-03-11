@@ -49,7 +49,7 @@ router.get('/', (req, res) => {
 // INDEX route -> show only the loggedIn user's fruits
 router.get('/mine', (req, res) => {
     // Find all the fruits in the DB by querying it
-    Fruit.find({username: req.session.username})
+    Fruit.find({ owner: req.session.userId })
         // Then render a template AFTER they're found
         // fruits is what is returned if the promise is resolved/fulfilled
         .then( fruits => {
@@ -81,7 +81,10 @@ router.post('/', (req, res) => {
     req.body.readyToEat = req.body.readyToEat === 'on' ? true : false
     console.log('this is the fruit to create ', req.body)
     // Now we're ready for mongoose to do it's thing
-    req.body.username = req.session.username // req.session stores the username when loggedin/ session is created
+    // req.body.username = req.session.username // req.session stores the username when loggedin/ session is created
+    // Instead of a username, we're now using a reference
+    // and since we've stored the id of the user in the session object, we can use it tot set the owner property of the fruit upon creation
+    req.body.owner = req.session.userId
     Fruit.create(req.body)
         .then( fruit => {
             console.log('this was returned from create: ', fruit)
@@ -144,7 +147,8 @@ router.get('/:id', (req, res) => {
         .then( fruit => {
             const username = req.session.username
 			const loggedIn = req.session.loggedIn
-            res.render('fruits/show', {fruit, username, loggedIn})
+            const userId = req.session.userId
+            res.render('fruits/show', {fruit, username, loggedIn, userId})
         })
         // If there is an error, show that instead
         .catch( error => {

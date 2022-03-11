@@ -12,7 +12,16 @@ const fruitSchema = new Schema(
         name: {type: String},
         color: {type: String},
         readyToEat: {type: Boolean},
-        username: {type: String}
+        // Instead of username, we're going to use a reference
+        // username: {type: String}
+        owner: {
+            // References the type 'objectid'
+            type: Schema.Types.ObjectId,
+            // References the Model 'User'
+            ref: 'User'
+            // Now that we have an owner field, let's look and
+            // replace references to the username in our fruit controllers
+        }
     }, {timestamps: true}
 )
 
