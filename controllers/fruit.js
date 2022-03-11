@@ -143,6 +143,7 @@ router.get('/:id', (req, res) => {
     const fruitId = req.params.id
     // Then, we can find a fruit by its id
     Fruit.findById(fruitId)
+        .populate('comments.author')
         // Once found, then we can render a view with the data
         .then( fruit => {
             console.log('The fruit we got\n', fruit)
